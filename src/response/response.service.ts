@@ -36,6 +36,14 @@ export class ResponseService {
         }
     }
 
+    @HttpCode(403)
+    forbidden(message: string) {
+        return {
+            "sucess": false,
+            "message": message,
+        }
+    }
+
     @HttpCode(404)
     notFound(message: string) {
         return {

@@ -34,10 +34,12 @@ export class AuthService {
         password: string,
         name: string,
     ) {
-        const user = this.userSerivce.user({ email });
-        if (user == null) {
+        const user = await this.userSerivce.user({ email: String(email) });
+        
+        if (user != null) {
             return this.responseService.badRequest("User already exists");
         }
+
 
         const hashedPass = await bcrypt.hash(password, this.saltRounds);
         const res = await this.userSerivce.createUser({
