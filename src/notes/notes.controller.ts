@@ -35,11 +35,7 @@ export class NotesController {
         const userId = req.user.sub;
         const note = this.noteService.createNote({
             content: createNoteDto.content,
-            user: {
-                connect: {
-                    id: Number(userId)
-                }
-            }
+            userId,
         });
         return this.responseService.ok("Note Created successfully", note);
 
