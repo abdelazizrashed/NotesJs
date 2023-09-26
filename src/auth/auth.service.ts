@@ -1,4 +1,4 @@
-import { Injectable, NotAcceptableException, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { ResponseService } from 'src/response/response.service';
@@ -17,8 +17,10 @@ export class AuthService {
         const passValid = await bcrypt.compare(pass, user.password)
         if (user && passValid) {
             const jwtPayload = { sub: user.id, email: user.email };
+            console.log("[Notes.js] jwtPayload: ", jwtPayload);
+            const token = await this.jwtService.signAsync(jwtPayload)
             return this.responseService.ok("Login successful", {
-                token: await this.jwtService.signAsync(jwtPayload),
+                token: token,
                 user: {
                     id: user.id,
                     email: user.email,
@@ -35,7 +37,7 @@ export class AuthService {
         name: string,
     ) {
         const user = await this.userSerivce.user({ email: String(email) });
-        
+
         if (user != null) {
             return this.responseService.badRequest("User already exists");
         }
