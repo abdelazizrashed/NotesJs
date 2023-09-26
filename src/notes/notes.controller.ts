@@ -3,7 +3,11 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { NoteService } from 'src/note/note.service';
 import { ResponseService } from 'src/response/response.service';
 import { CreateNoteDto } from './dto/create-note.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+
+@ApiBearerAuth()
+@ApiTags('notes')
 @Controller('notes')
 export class NotesController {
     constructor(private noteService: NoteService, private responseService: ResponseService) { }
